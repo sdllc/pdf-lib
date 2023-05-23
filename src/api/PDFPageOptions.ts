@@ -2,7 +2,7 @@ import { Color } from 'src/api/colors';
 import PDFFont from 'src/api/PDFFont';
 import { Rotation } from 'src/api/rotations';
 import { LineCapStyle } from 'src/api/operators';
-import { PDFName } from '..';
+import { PDFContentStream, PDFDict, PDFName } from '..';
 
 export enum BlendMode {
   Normal = 'Normal',
@@ -75,7 +75,13 @@ export interface PDFPageDrawSVGOptions {
   borderDashPhase?: number;
   borderLineCap?: LineCapStyle;
   blendMode?: BlendMode;
+
   pattern?: string|PDFName;
+  softmask?: PDFDict;
+  content_stream?: PDFContentStream;
+
+  clip?: { x: number, y: number, width: number, height: number };
+
 }
 
 export interface PDFPageDrawLineOptions {
@@ -108,6 +114,8 @@ export interface PDFPageDrawRectangleOptions {
   borderLineCap?: LineCapStyle;
   blendMode?: BlendMode;
   pattern?: string|PDFName;
+  content_stream?: PDFContentStream;
+  softmask?: PDFDict;
 }
 
 export interface PDFPageDrawSquareOptions {

@@ -1243,13 +1243,14 @@ export default class PDFPage {
       opacity: options.opacity,
       borderOpacity: options.borderOpacity,
       blendMode: options.blendMode,
+      softmask: options.softmask,
     });
 
     if (!('color' in options) && !('borderColor' in options)) {
       options.borderColor = rgb(0, 0, 0);
     }
 
-    const contentStream = this.getContentStream();
+    const contentStream = options.content_stream || this.getContentStream();
     contentStream.push(
       ...drawSvgPath(path, {
         x: options.x ?? this.x,
@@ -1264,6 +1265,7 @@ export default class PDFPage {
         borderLineCap: options.borderLineCap ?? undefined,
         graphicsState: graphicsStateKey,
         pattern: options.pattern ?? undefined,
+        clip: options.clip ?? undefined,
       }),
     );
   }
@@ -1385,12 +1387,14 @@ export default class PDFPage {
       opacity: options.opacity,
       borderOpacity: options.borderOpacity,
       blendMode: options.blendMode,
+      softmask: options.softmask,
     });
 
     if (!('color' in options) && !('borderColor' in options)) {
       options.color = rgb(0, 0, 0);
     }
 
+    /*
     const test = drawRectangle({
       x: options.x ?? this.x,
       y: options.y ?? this.y,
@@ -1409,8 +1413,13 @@ export default class PDFPage {
       pattern: options.pattern ?? undefined,
     });
     console.info({test, options});
+    */
 
-    const contentStream = this.getContentStream();
+    if (options.content_stream) {
+      console.info('using passed content stream');
+    }
+
+    const contentStream = options.content_stream || this.getContentStream();
     contentStream.push(
       ...drawRectangle({
         x: options.x ?? this.x,
@@ -1603,13 +1612,15 @@ export default class PDFPage {
     opacity?: number;
     borderOpacity?: number;
     blendMode?: BlendMode;
+    softmask?: PDFDict;
   }): PDFName | undefined {
-    const { opacity, borderOpacity, blendMode } = options;
+    const { opacity, borderOpacity, blendMode, softmask } = options;
 
     if (
       opacity === undefined &&
       borderOpacity === undefined &&
-      blendMode === undefined
+      blendMode === undefined &&
+      softmask === undefined
     ) {
       return undefined;
     }
@@ -1619,6 +1630,7 @@ export default class PDFPage {
       ca: opacity,
       CA: borderOpacity,
       BM: blendMode,
+      SMask: softmask,
     });
 
     const key = this.node.newExtGState('GS', graphicsState);

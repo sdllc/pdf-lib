@@ -356,12 +356,25 @@ export const drawSvgPath = (
     borderLineCap?: LineCapStyle;
     graphicsState?: string | PDFName;
     pattern?: string | PDFName;
+    clip?: { x: number, y: number, width: number, height: number },
   },
 ) =>
   [
     pushGraphicsState(),
     options.graphicsState && setGraphicsState(options.graphicsState),
 
+    ///
+
+    options.clip && moveTo(options.clip.x, options.clip.y),
+    options.clip && lineTo(options.clip.x, options.clip.y + options.clip.height),
+    options.clip && lineTo(options.clip.x + options.clip.width, options.clip.y + options.clip.height),
+    options.clip && lineTo(options.clip.x + options.clip.width, options.clip.y),
+    options.clip && closePath(),
+    options.clip && clip(),
+    options.clip && endPath(),
+
+    ///
+    
     translate(options.x, options.y),
     rotateRadians(toRadians(options.rotate ?? degrees(0))),
 
