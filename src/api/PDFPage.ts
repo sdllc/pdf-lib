@@ -1263,6 +1263,7 @@ export default class PDFPage {
         borderDashPhase: options.borderDashPhase ?? undefined,
         borderLineCap: options.borderLineCap ?? undefined,
         graphicsState: graphicsStateKey,
+        pattern: options.pattern ?? undefined,
       }),
     );
   }
@@ -1376,6 +1377,8 @@ export default class PDFPage {
       0,
       1,
     );
+    // assertOrUndefined(options.pattern, 'options.pattern', ['string']);
+
     assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
 
     const graphicsStateKey = this.maybeEmbedGraphicsState({
@@ -1387,6 +1390,25 @@ export default class PDFPage {
     if (!('color' in options) && !('borderColor' in options)) {
       options.color = rgb(0, 0, 0);
     }
+
+    const test = drawRectangle({
+      x: options.x ?? this.x,
+      y: options.y ?? this.y,
+      width: options.width ?? 150,
+      height: options.height ?? 100,
+      rotate: options.rotate ?? degrees(0),
+      xSkew: options.xSkew ?? degrees(0),
+      ySkew: options.ySkew ?? degrees(0),
+      borderWidth: options.borderWidth ?? 0,
+      color: options.color ?? undefined,
+      borderColor: options.borderColor ?? undefined,
+      borderDashArray: options.borderDashArray ?? undefined,
+      borderDashPhase: options.borderDashPhase ?? undefined,
+      graphicsState: graphicsStateKey,
+      borderLineCap: options.borderLineCap ?? undefined,
+      pattern: options.pattern ?? undefined,
+    });
+    console.info({test, options});
 
     const contentStream = this.getContentStream();
     contentStream.push(
@@ -1405,6 +1427,7 @@ export default class PDFPage {
         borderDashPhase: options.borderDashPhase ?? undefined,
         graphicsState: graphicsStateKey,
         borderLineCap: options.borderLineCap ?? undefined,
+        pattern: options.pattern ?? undefined,
       }),
     );
   }

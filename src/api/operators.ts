@@ -304,6 +304,11 @@ export const setFillingGrayscaleColor = (gray: number | PDFNumber) =>
 export const setStrokingGrayscaleColor = (gray: number | PDFNumber) =>
   PDFOperator.of(Ops.StrokingColorGray, [asPDFNumber(gray)]);
 
+export const ShadingFill = (name: string | PDFName) =>
+  PDFOperator.of(Ops.ShadingFill, [
+      asPDFName(name),
+    ]);
+
 export const setFillingRgbColor = (
   red: number | PDFNumber,
   green: number | PDFNumber,

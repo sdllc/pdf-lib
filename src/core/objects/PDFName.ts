@@ -34,6 +34,8 @@ class PDFName extends PDFObject {
   };
 
   /* tslint:disable member-ordering */
+  static readonly Shading = PDFName.of('Shading');
+  
   static readonly Length = PDFName.of('Length');
   static readonly FlateDecode = PDFName.of('FlateDecode');
   static readonly Resources = PDFName.of('Resources');

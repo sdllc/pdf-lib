@@ -2,6 +2,7 @@ import { Color } from 'src/api/colors';
 import PDFFont from 'src/api/PDFFont';
 import { Rotation } from 'src/api/rotations';
 import { LineCapStyle } from 'src/api/operators';
+import { PDFName } from '..';
 
 export enum BlendMode {
   Normal = 'Normal',
@@ -74,6 +75,7 @@ export interface PDFPageDrawSVGOptions {
   borderDashPhase?: number;
   borderLineCap?: LineCapStyle;
   blendMode?: BlendMode;
+  pattern?: string|PDFName;
 }
 
 export interface PDFPageDrawLineOptions {
@@ -105,6 +107,7 @@ export interface PDFPageDrawRectangleOptions {
   borderDashPhase?: number;
   borderLineCap?: LineCapStyle;
   blendMode?: BlendMode;
+  pattern?: string|PDFName;
 }
 
 export interface PDFPageDrawSquareOptions {

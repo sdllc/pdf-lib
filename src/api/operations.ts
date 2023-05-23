@@ -31,6 +31,8 @@ import {
   clip,
   endPath,
   appendBezierCurve,
+  ShadingFill,
+  // clipEvenOdd,
 } from 'src/api/operators';
 import { Rotation, degrees, toRadians } from 'src/api/rotations';
 import { svgPathToOperators } from 'src/api/svgPath';
@@ -190,6 +192,7 @@ export const drawRectangle = (options: {
   borderDashArray?: (number | PDFNumber)[];
   borderDashPhase?: number | PDFNumber;
   graphicsState?: string | PDFName;
+  pattern?: string | PDFName;
 }) =>
   [
     pushGraphicsState(),
@@ -208,8 +211,12 @@ export const drawRectangle = (options: {
     lineTo(options.width, 0),
     closePath(),
 
+    options.pattern && clip(),
+    options.pattern && endPath(),
+
     // prettier-ignore
-    options.color && options.borderWidth ? fillAndStroke()
+   options.pattern ? ShadingFill(options.pattern)
+  : options.color && options.borderWidth ? fillAndStroke()
   : options.color                      ? fill()
   : options.borderColor                ? stroke()
   : closePath(),
@@ -348,6 +355,7 @@ export const drawSvgPath = (
     borderDashPhase?: number | PDFNumber;
     borderLineCap?: LineCapStyle;
     graphicsState?: string | PDFName;
+    pattern?: string | PDFName;
   },
 ) =>
   [
@@ -369,8 +377,12 @@ export const drawSvgPath = (
 
     ...svgPathToOperators(path),
 
+    options.pattern && clip(),
+    options.pattern && endPath(),
+
     // prettier-ignore
-    options.color && options.borderWidth ? fillAndStroke()
+    options.pattern ? ShadingFill(options.pattern)
+  : options.color && options.borderWidth ? fillAndStroke()
   : options.color                      ? fill()
   : options.borderColor                ? stroke()
   : closePath(),
