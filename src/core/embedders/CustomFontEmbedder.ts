@@ -208,6 +208,15 @@ class CustomFontEmbedder {
   }
 
   protected computeWidths(): (number | number[])[] {
+
+    /*
+    let flag = false;
+    if (/firasans-regular/i.test(this.fontName)) {
+      console.info("Calling computeWidths", this);
+      flag = true;
+    }
+    */
+
     const glyphs = this.glyphCache.access();
 
     const widths: (number | number[])[] = [];
@@ -228,6 +237,12 @@ class CustomFontEmbedder {
         currSection = [];
       }
 
+      /*
+      if (flag && currGlyph.codePoints[0] === 48) {
+        console.info('48', currGlyph);
+      }
+      */
+
       currSection.push(currGlyph.advanceWidth * this.scale);
     }
 
@@ -236,6 +251,7 @@ class CustomFontEmbedder {
     return widths;
   }
 
+  /*
   private allGlyphsInFontSortedById = (): Glyph[] => {
     const glyphs: Glyph[] = new Array(this.font.characterSet.length);
     for (let idx = 0, len = glyphs.length; idx < len; idx++) {
@@ -244,6 +260,20 @@ class CustomFontEmbedder {
     }
     return sortedUniq(glyphs.sort(byAscendingId), (g) => g.id);
   };
+  */
+
+  /**
+   * thanks to @phipla, see
+   * https://github.com/Hopding/pdf-lib/pull/1325
+   */
+  private allGlyphsInFontSortedById = (): Glyph[] => {
+    const glyphs: Glyph[] = new Array(this.font.numGlyphs);
+    for (let idx = 0, len = glyphs.length; idx < len; idx++) {
+      glyphs[idx] = this.font.getGlyph(idx);
+    }
+    return sortedUniq(glyphs.sort(byAscendingId), (g) => g.id);
+  };
+
 }
 
 export default CustomFontEmbedder;
