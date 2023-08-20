@@ -68,7 +68,7 @@
   "main": "cjs/index.js",
   "module": "es/index.js",
   "unpkg": "dist/pdf-lib.min.js",
-  "types": "cjs/index.d.ts",
+  "types": "es/index.d.ts",
   "typesVersions": {
     "<=3.5": {
       "*": [
