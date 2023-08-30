@@ -294,7 +294,7 @@ class CustomFontEmbedder {
       // const codePoint = this.font.characterSet[idx];
       // this.font.glyphForCodePoint(codePoint);
 
-      glyphs[idx] = this.font.getGlyph(idx, [65]); // that was unexpected
+      glyphs[idx] = this.font.getGlyph(idx); // , [65]); // that was unexpected
 
       /* 
       

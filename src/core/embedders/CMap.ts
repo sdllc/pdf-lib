@@ -20,9 +20,19 @@ export const createCmap = (glyphs: Glyph[], glyphId: (g?: Glyph) => number) => {
   for (let idx = 0, len = glyphs.length; idx < len; idx++) {
 
     const glyph = glyphs[idx];
+
+    // add a default code point if we have none. this appears to fix
+    // the cmap, probably by patching holes.
+
+    const code_points = glyph.codePoints;
+    if (!code_points.length) {
+      code_points.push(65);
+    }
+
     const id = cmapHexFormat(cmapHexString(glyphId(glyph)));
-    const unicode = cmapHexFormat(...glyph.codePoints.map(cmapCodePointFormat));
+    const unicode = cmapHexFormat(...code_points.map(cmapCodePointFormat));
     bfChars[idx] = [id, unicode];
+    
   }
 
   return fillCmapTemplate(bfChars);
