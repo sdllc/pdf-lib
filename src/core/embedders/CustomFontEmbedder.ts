@@ -265,11 +265,48 @@ class CustomFontEmbedder {
   /**
    * thanks to @phipla, see
    * https://github.com/Hopding/pdf-lib/pull/1325
+   * 
+   * is this what's causing problems with the cmap? like the sizes don't 
+   * match up or something? we should be able to check by disabling this temp
+   * 
+   * looks like that's correct... we need to track down the issue
+   * 
    */
   private allGlyphsInFontSortedById = (): Glyph[] => {
+
+    // console.info({charset_len: this.font.characterSet.length, num_glyphs: this.font.numGlyphs});
+
     const glyphs: Glyph[] = new Array(this.font.numGlyphs);
     for (let idx = 0, len = glyphs.length; idx < len; idx++) {
-      glyphs[idx] = this.font.getGlyph(idx);
+
+      // this lookup definitely has some side-effects, although
+      // I'm not entirely sure what they are -- but it's part of 
+      // the problem. 
+
+      // see comment on the `getGlyph` method:
+      //
+      // * Returns a glyph object for the given glyph id. You can pass the array of
+      // * code points this glyph represents for your use later, and it will be
+      // * stored in the glyph object.
+      //
+      // so apparently we need to set this - but from where? (...)
+
+      // const codePoint = this.font.characterSet[idx];
+      // this.font.glyphForCodePoint(codePoint);
+
+      glyphs[idx] = this.font.getGlyph(idx, [65]); // that was unexpected
+
+      /* 
+      
+      on the right track here... but not sufficient. how do these
+      get assigned? (...)
+      
+      console.info({idx, codePoint, cp: glyphs[idx].codePoints})
+      if (codePoint) {
+        glyphs[idx].codePoints.push(codePoint);
+      }
+      */
+
     }
     return sortedUniq(glyphs.sort(byAscendingId), (g) => g.id);
   };
