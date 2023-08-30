@@ -24,6 +24,10 @@ export const createCmap = (glyphs: Glyph[], glyphId: (g?: Glyph) => number) => {
     // add a default code point if we have none. this appears to fix
     // the cmap, probably by patching holes.
 
+    // I wonder if we could just omit entries that don't have any 
+    // code points? not sure what would happen in that case... need
+    // to check the spec if it's required that we have every entry
+
     const code_points = glyph.codePoints;
     if (!code_points.length) {
       code_points.push(65);
