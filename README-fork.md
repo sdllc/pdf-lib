@@ -2,9 +2,13 @@
 # About this fork
 
 - fixes font rendering for duplicate characters, required for ligatures
-  and alt charsets
+  and alt charsets.
 
-- adds softmask to SVG rendering for transparency groups
+- fixes cmap generation (so copying and searching text work properly).
+  the cmap wasn't originally broken, but the way it was generated didn't 
+  work after we added the rendering fix above.
+
+- adds softmask to SVG rendering for transparency groups.
 
 # Building
 
